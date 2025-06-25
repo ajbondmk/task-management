@@ -1,0 +1,28 @@
+services:
+  frontend:
+    build: ./frontend
+    restart: always
+    ports:
+      - 80:4200
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 5000:5000
+  db:
+    build: ./db
+    restart: always
+    shm_size: 128mb
+    volumes: # Persistent data storage
+      - data_sql:/var/lib/postgresql/data
+    # The following config is purely for dev purposes, so we can access the db directly
+    # This config would not be used if this were going to production!
+    container_name: db
+    environment:
+      POSTGRES_USER: taskmanager
+      POSTGRES_PASSWORD: taskmanagerpassword
+      POSTGRES_DB: tasksdb
+volumes:
+  data_sql:
