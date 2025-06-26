@@ -34,5 +34,15 @@ services:
       POSTGRES_USER: taskmanager
       POSTGRES_PASSWORD: taskmanagerpassword
       POSTGRES_DB: tasksdb
+  task_runner:
+    container_name: task_runner
+    build: ./task_runner
+    depends_on:
+      - db
+    environment:
+      DATABASE_HOST: db
+      DATABASE_NAME: tasksdb
+      DATABASE_USERNAME: taskmanager
+      DATABASE_PASSWORD: taskmanagerpassword
 volumes:
   data_sql:
