@@ -24,3 +24,16 @@ def createTask(request):
         Task.objects.create(name=name, created=timezone.now())
         return JsonResponse({"status": "Task created"})
     return JsonResponse({"error": "POST request required"}, status=405)
+
+@csrf_exempt
+def deleteTask(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        id = data.get("id")
+        if not id:
+            return JsonResponse({"error": "Task ID is required"}, status=400)
+        if not Task.objects.filter(id=id).exists():
+            return JsonResponse({"error": "Task not found"}, status=404)
+        Task.objects.filter(id=id).delete()
+        return JsonResponse({"status": "Task deleted"})
+    return JsonResponse({"error": "POST request required"}, status=405)

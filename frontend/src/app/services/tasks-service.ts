@@ -2,9 +2,10 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 
-interface Task {
+export interface Task {
   id: number;
   name: string;
+  created: Date;
 }
 
 @Injectable({
@@ -19,7 +20,11 @@ export class TasksService {
 
   listTasks(): Observable<Task[]> {
     return this.http.get<any[]>('http://localhost:8000/listTasks/').pipe(
-      map((tasks) => tasks.map((task) => ({ name: task.name, id: task.id } as Task)))
+      map((tasks) => tasks.map((task) => ({ name: task.name, id: task.id, created: task.created } as Task)))
     );
+  }
+
+  deleteTask(id: number): Observable<any> {
+    return this.http.post<any>('http://localhost:8000/deleteTask/', { id });
   }
 }
