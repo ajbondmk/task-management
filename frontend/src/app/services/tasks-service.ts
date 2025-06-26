@@ -5,8 +5,11 @@ import { map, Observable } from 'rxjs';
 export interface Task {
   id: number;
   name: string;
+  description: string;
   created: Date;
   status: TaskStatus;
+  progressPercentage: number;
+  results: string;
 }
 
 export enum TaskStatus {
@@ -29,7 +32,15 @@ export class TasksService {
 
   listTasks(): Observable<Task[]> {
     return this.http.get<any[]>('http://localhost:8000/listTasks/').pipe(
-      map((tasks) => tasks.map((task) => ({ name: task.name, id: task.id, created: task.created, status: task.status } as Task)))
+      map((tasks) => tasks.map((task) => ({
+        id: task.id,
+        name: task.name,
+        description: task.description,
+        created: task.created,
+        status: task.status,
+        progressPercentage: task.progressPercentage,
+        results: task.results
+      } as Task)))
     );
   }
 

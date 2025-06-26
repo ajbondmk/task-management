@@ -8,6 +8,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DatePipe } from '@angular/common';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CreateTaskDialog } from '../create-task-dialog/create-task-dialog';
 import { DeleteTaskDialog } from '../delete-task-dialog/delete-task-dialog';
 import { TasksService } from '../../services/tasks-service';
@@ -18,7 +19,7 @@ import { UpdateTaskDialog } from '../update-task-dialog/update-task-dialog';
 @Component({
   selector: 'app-tasks-list',
   standalone: true,
-  imports: [CommonModule, DatePipe, MatButtonModule, MatDialogModule, MatTableModule, MatIconModule, MatTooltipModule, MatMenuModule, StatusChipComponent],
+  imports: [CommonModule, DatePipe, MatButtonModule, MatDialogModule, MatTableModule, MatIconModule, MatTooltipModule, MatMenuModule, MatProgressBarModule, StatusChipComponent],
   templateUrl: './tasks-list.component.html',
   styleUrl: './tasks-list.component.scss'
 })
@@ -27,7 +28,7 @@ export class TasksListComponent {
   private readonly dialog = inject(MatDialog);
   private readonly destroyRef = inject(DestroyRef);
 
-  displayedColumns: string[] = ['name', 'status', 'created', 'actions'];
+  displayedColumns: string[] = ['name', 'description', 'status', 'created', 'progressPercentage', 'results', 'actions'];
   dataSource: Task[] = [];
   TaskStatus = TaskStatus;
 
