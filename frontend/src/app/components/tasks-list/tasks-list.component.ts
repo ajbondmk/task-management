@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,12 +9,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { CreateTaskDialog } from '../create-task-dialog/create-task-dialog';
 import { DeleteTaskDialog } from '../delete-task-dialog/delete-task-dialog';
 import { TasksService } from '../../services/tasks-service';
-import { Task } from '../../services/tasks-service';
+import { Task, TaskStatus } from '../../services/tasks-service';
+import { StatusChipComponent } from '../status-chip/status-chip';
 
 @Component({
   selector: 'app-tasks-list',
   standalone: true,
-  imports: [MatButtonModule, MatDialogModule, MatTableModule, MatIconModule, MatTooltipModule],
+  imports: [CommonModule, MatButtonModule, MatDialogModule, MatTableModule, MatIconModule, MatTooltipModule, StatusChipComponent],
   templateUrl: './tasks-list.component.html',
   styleUrl: './tasks-list.component.scss'
 })
@@ -22,8 +24,9 @@ export class TasksListComponent {
   private readonly dialog = inject(MatDialog);
   private readonly destroyRef = inject(DestroyRef);
 
-  displayedColumns: string[] = ['name', 'created', 'actions'];
+  displayedColumns: string[] = ['name', 'status', 'created', 'actions'];
   dataSource: Task[] = [];
+  TaskStatus = TaskStatus;
 
   constructor() {
     this.loadTasks();
@@ -63,6 +66,9 @@ export class TasksListComponent {
   private loadTasks() {
     this.tasksService.listTasks()
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(data => this.dataSource = data);
+      .subscribe(data => {
+        console.log(data);
+        this.dataSource = data;
+      });
   }
 }

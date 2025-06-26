@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 import json
 from .models import Task
+from .models import TaskStatus
 
 def getTask(request):
     task = Task.objects.first()
@@ -21,7 +22,7 @@ def createTask(request):
         name = data.get("name")
         if not name:
             return JsonResponse({"error": "Task name is required"}, status=400)
-        Task.objects.create(name=name, created=timezone.now())
+        Task.objects.create(name=name, created=timezone.now(), status=TaskStatus.NOT_STARTED.value)
         return JsonResponse({"status": "Task created"})
     return JsonResponse({"error": "POST request required"}, status=405)
 
