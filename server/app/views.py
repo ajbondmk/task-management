@@ -5,12 +5,6 @@ import json
 from .models import Task
 from .models import TaskStatus
 
-def getTask(request):
-    task = Task.objects.first()
-    if task is None:
-        return JsonResponse({"error": "No tasks found"}, status=404)
-    return JsonResponse({"name": task.name})
-
 def listTasks(request):
     latest_task_list = Task.objects.order_by("-created")
     return JsonResponse(list(latest_task_list.values()), safe=False)
@@ -37,4 +31,20 @@ def deleteTask(request):
             return JsonResponse({"error": "Task not found"}, status=404)
         Task.objects.filter(id=id).delete()
         return JsonResponse({"status": "Task deleted"})
+    return JsonResponse({"error": "POST request required"}, status=405)
+
+@csrf_exempt
+def updateTask(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        id = data.get("id")
+        name = data.get("name")
+        if not id:
+            return JsonResponse({"error": "Task ID is required"}, status=400)
+        if not Task.objects.filter(id=id).exists():
+            return JsonResponse({"error": "Task not found"}, status=404)
+        if not name:
+            return JsonResponse({"error": "Task name is required"}, status=400)
+        Task.objects.filter(id=id).update(name=name)
+        return JsonResponse({"status": "Task updated"})
     return JsonResponse({"error": "POST request required"}, status=405)

@@ -11,6 +11,7 @@ import { DeleteTaskDialog } from '../delete-task-dialog/delete-task-dialog';
 import { TasksService } from '../../services/tasks-service';
 import { Task, TaskStatus } from '../../services/tasks-service';
 import { StatusChipComponent } from '../status-chip/status-chip';
+import { UpdateTaskDialog } from '../update-task-dialog/update-task-dialog';
 
 @Component({
   selector: 'app-tasks-list',
@@ -50,6 +51,19 @@ export class TasksListComponent {
     });
   }
 
+  protected openUpdateTaskDialog(task: Task) {
+    this.dialog.open(UpdateTaskDialog, {
+      width: '500px',
+      data: { task }
+    }).afterClosed().pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(result => {
+      if (result) {
+        this.loadTasks();
+      }
+    });
+  }
+
   protected openDeleteTaskDialog(task: Task) {
     this.dialog.open(DeleteTaskDialog, {
       width: '500px',
@@ -67,7 +81,6 @@ export class TasksListComponent {
     this.tasksService.listTasks()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(data => {
-        console.log(data);
         this.dataSource = data;
       });
   }

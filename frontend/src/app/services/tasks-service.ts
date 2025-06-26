@@ -36,4 +36,8 @@ export class TasksService {
   deleteTask(id: number): Observable<any> {
     return this.http.post<any>('http://localhost:8000/deleteTask/', { id });
   }
+
+  updateTask(id: number, name: string): Observable<any> {
+    return this.http.post<any>('http://localhost:8000/updateTask/', { id, name });
+  }
 }
