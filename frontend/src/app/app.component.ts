@@ -10,9 +10,4 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'Task Manager';
-
-  constructor(private http: HttpClient) {
-    this.http.get<any>("http://localhost:8000/listTasks/").subscribe(data => console.log(data));
-  }
 }
