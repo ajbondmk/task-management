@@ -16,14 +16,45 @@
 
 <ng-container matColumnDef="created">
     <th mat-header-cell *matHeaderCellDef> Created </th>
-    <td mat-cell *matCellDef="let task"> {{task.created}} </td>
+    <td mat-cell *matCellDef="let task"> {{task.created | date:'d MMMM y, HH:mm:ss'}} </td>
 </ng-container>
 
 <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef> Actions </th>
+    <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let task">
-        <button mat-icon-button (click)="openUpdateTaskDialog(task)" matTooltip="Edit task"><mat-icon>edit</mat-icon></button>
-        <button mat-icon-button (click)="openDeleteTaskDialog(task)" matTooltip="Delete task"><mat-icon>delete</mat-icon></button>
+        <button
+                *ngIf="task.status === TaskStatus.NotStarted || task.status === TaskStatus.Paused"
+                mat-icon-button
+                (click)="updateTaskStatus(task.id, TaskStatus.InProgress)"
+                [matTooltip]="task.status === TaskStatus.NotStarted ? 'Run task' : 'Resume task'">
+            <mat-icon>play_arrow</mat-icon>
+        </button>
+        <button
+                *ngIf="task.status === TaskStatus.InProgress"
+                mat-icon-button
+                (click)="updateTaskStatus(task.id, TaskStatus.Paused)"
+                matTooltip="Pause task">
+            <mat-icon>pause</mat-icon>
+        </button>
+
+        <button mat-icon-button [matMenuTriggerFor]="moreActionsMenu" matTooltip="More actions">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #moreActionsMenu="matMenu">            
+            <button mat-menu-item (click)="openUpdateTaskDialog(task)">
+                <mat-icon>edit</mat-icon> Edit task
+            </button>
+            <button mat-menu-item *ngIf="task.status === TaskStatus.NotStarted || task.status === TaskStatus.InProgress || task.status === TaskStatus.Paused" (click)="updateTaskStatus(task.id, TaskStatus.Cancelled)">
+                <mat-icon>stop</mat-icon> Cancel task
+            </button>
+            <button mat-menu-item *ngIf="task.status === TaskStatus.Cancelled" (click)="updateTaskStatus(task.id, TaskStatus.InProgress)">
+                <mat-icon>play_arrow</mat-icon> Run task
+            </button>
+            <button mat-menu-item (click)="openDeleteTaskDialog(task)">
+                <mat-icon>delete</mat-icon> Delete task
+            </button>
+        </mat-menu>
+
     </td>
 </ng-container>
 

@@ -7,4 +7,5 @@ urlpatterns = [
     path("createTask/", views.createTask, name="createTask"),
     path("deleteTask/", views.deleteTask, name="deleteTask"),
     path("updateTask/", views.updateTask, name="updateTask"),
+    path("updateTaskStatus/", views.updateTaskStatus, name="updateTaskStatus"),
 ]

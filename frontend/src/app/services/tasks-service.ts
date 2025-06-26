@@ -40,4 +40,8 @@ export class TasksService {
   updateTask(id: number, name: string): Observable<any> {
     return this.http.post<any>('http://localhost:8000/updateTask/', { id, name });
   }
+
+  updateTaskStatus(id: number, status: TaskStatus): Observable<any> {
+    return this.http.post<any>('http://localhost:8000/updateTaskStatus/', { id, status });
+  }
 }
