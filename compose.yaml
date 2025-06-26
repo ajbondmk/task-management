@@ -4,14 +4,25 @@ services:
     restart: always
     ports:
       - 80:4200
-  backend:
-    build: 
-      context: ./backend
-      dockerfile: Dockerfile
-    restart: always
+  server:
+    build: ./server
     ports:
-      - 5000:5000
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      SECRET_KEY: your_secret_key
+      DEBUG: True
+      DJANGO_LOGLEVEL: info
+      DJANGO_ALLOWED_HOSTS: localhost
+      DATABASE_ENGINE: postgresql_psycopg2
+      DATABASE_NAME: tasksdb
+      DATABASE_USERNAME: taskmanager
+      DATABASE_PASSWORD: taskmanagerpassword
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
   db:
+    container_name: db
     build: ./db
     restart: always
     shm_size: 128mb
@@ -19,7 +30,6 @@ services:
       - data_sql:/var/lib/postgresql/data
     # The following config is purely for dev purposes, so we can access the db directly
     # This config would not be used if this were going to production!
-    container_name: db
     environment:
       POSTGRES_USER: taskmanager
       POSTGRES_PASSWORD: taskmanagerpassword
