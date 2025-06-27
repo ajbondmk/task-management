@@ -67,7 +67,7 @@
                 <mat-icon>stop</mat-icon> Cancel task
             </button>
             <button mat-menu-item *ngIf="task.status === TaskStatus.Cancelled" (click)="updateTaskStatus(task.id, TaskStatus.InProgress)">
-                <mat-icon>play_arrow</mat-icon> Run task
+                <mat-icon>play_arrow</mat-icon> Rerun task
             </button>
             <button mat-menu-item (click)="openDeleteTaskDialog(task)">
                 <mat-icon>delete</mat-icon> Delete task

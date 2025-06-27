@@ -60,6 +60,8 @@ def updateTaskStatus(request):
         if not Task.objects.filter(id=id).exists():
             return JsonResponse({"error": "Task not found"}, status=404)
         Task.objects.filter(id=id).update(status=status)
+        if status == TaskStatus.CANCELLED.value:
+            Task.objects.filter(id=id).update(progressPercentage=0)
         return JsonResponse({"status": "Task status updated"})
     return JsonResponse({"error": "POST request required"}, status=405)
 
