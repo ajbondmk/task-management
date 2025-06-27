@@ -19,12 +19,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { CreateTaskDialog } from '../create-task-dialog/create-task-dialog';
-import { DeleteTaskDialog } from '../delete-task-dialog/delete-task-dialog';
+import { CreateTaskDialog } from '../../dialogs/create-task-dialog/create-task-dialog';
+import { DeleteTaskDialog } from '../../dialogs/delete-task-dialog/delete-task-dialog';
 import { TasksService } from '../../services/tasks-service';
 import { Task, TaskStatus } from '../../services/tasks-service';
-import { StatusChipComponent } from '../status-chip/status-chip';
-import { UpdateTaskDialog } from '../update-task-dialog/update-task-dialog';
+import { StatusChipComponent } from '../../components/status-chip/status-chip';
+import { UpdateTaskDialog } from '../../dialogs/update-task-dialog/update-task-dialog';
 
 @Component({
   selector: 'app-tasks-list',
@@ -42,8 +42,8 @@ import { UpdateTaskDialog } from '../update-task-dialog/update-task-dialog';
     MatSortModule,
     StatusChipComponent,
   ],
-  templateUrl: './tasks-list.component.html',
-  styleUrl: './tasks-list.component.scss',
+  templateUrl: './tasks-list.html',
+  styleUrl: './tasks-list.scss',
 })
 export class TasksListComponent implements OnInit, OnDestroy {
   private readonly tasksService = inject(TasksService);

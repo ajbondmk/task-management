@@ -6,7 +6,6 @@ import {
   MAT_DIALOG_DATA,
   MatDialogRef,
   MatDialogActions,
-  MatDialogClose,
   MatDialogTitle,
   MatDialogContent,
 } from '@angular/material/dialog';
@@ -20,7 +19,6 @@ import { Task, TasksService } from '../../services/tasks-service';
     CommonModule,
     MatButtonModule,
     MatDialogActions,
-    MatDialogClose,
     MatDialogTitle,
     MatDialogContent,
   ],

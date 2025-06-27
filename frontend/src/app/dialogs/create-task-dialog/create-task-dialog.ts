@@ -8,23 +8,20 @@ import { MatInputModule } from '@angular/material/input';
 import {
   MatDialogRef,
   MatDialogActions,
-  MatDialogClose,
   MatDialogTitle,
   MatDialogContent,
-  MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { Task, TasksService } from '../../services/tasks-service';
+import { TasksService } from '../../services/tasks-service';
 
 @Component({
-  selector: 'update-task-dialog',
-  templateUrl: './update-task-dialog.html',
-  styleUrls: ['./update-task-dialog.scss'],
+  selector: 'create-task-dialog',
+  templateUrl: './create-task-dialog.html',
+  styleUrls: ['./create-task-dialog.scss'],
   imports: [
     CommonModule,
     FormsModule,
     MatButtonModule,
     MatDialogActions,
-    MatDialogClose,
     MatDialogTitle,
     MatDialogContent,
     MatFormFieldModule,
@@ -32,34 +29,26 @@ import { Task, TasksService } from '../../services/tasks-service';
   ],
   standalone: true,
 })
-export class UpdateTaskDialog {
-  private readonly dialogRef = inject(MatDialogRef<UpdateTaskDialog>);
+export class CreateTaskDialog {
+  private readonly dialogRef = inject(MatDialogRef<CreateTaskDialog>);
   private readonly tasksService = inject(TasksService);
   private readonly destroyRef = inject(DestroyRef);
 
-  protected data: { task: Task } = inject(MAT_DIALOG_DATA);
-  protected updatedName: string = this.data.task.name;
-  protected updatedDescription: string = this.data.task.description;
+  protected taskName: string = '';
+  protected taskDescription: string = '';
   protected saving = false;
 
   protected onCancel() {
     this.dialogRef.close();
   }
 
-  protected onUpdate() {
-    if (!this.updatedName) {
-      return;
-    }
-    if (
-      this.data.task.name === this.updatedName &&
-      this.data.task.description === this.updatedDescription
-    ) {
-      this.dialogRef.close();
+  protected onCreate() {
+    if (!this.taskName) {
       return;
     }
     this.saving = true;
     this.tasksService
-      .updateTask(this.data.task.id, this.updatedName, this.updatedDescription)
+      .createTask(this.taskName, this.taskDescription)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         // this.saving = false;
