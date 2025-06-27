@@ -13,10 +13,12 @@ valid_status_transitions = {
     TaskStatus.CANCELLED.value: [TaskStatus.RUNNING.value],
 }
 
+# Returns the list of all tasks in the database, ordered by creation date (most recent first).
 def listTasks(request):
     latest_task_list = Task.objects.order_by("-created")
     return JsonResponse(list(latest_task_list.values()), safe=False)
 
+# Given a name and description, creates a new task in the database.
 @csrf_exempt
 def createTask(request):
     if request.method == "POST":
@@ -29,6 +31,7 @@ def createTask(request):
         return JsonResponse({"status": "Task created"})
     return JsonResponse({"error": "POST request required"}, status=405)
 
+# Given a task ID, deletes that task from the database.
 @csrf_exempt
 def deleteTask(request):
     if request.method == "POST":
@@ -42,6 +45,7 @@ def deleteTask(request):
         return JsonResponse({"status": "Task deleted"})
     return JsonResponse({"error": "POST request required"}, status=405)
 
+# Given a task ID, name, and description, updates the name and description of that task.
 @csrf_exempt
 def updateTask(request):
     if request.method == "POST":
@@ -59,6 +63,8 @@ def updateTask(request):
         return JsonResponse({"status": "Task updated"})
     return JsonResponse({"error": "POST request required"}, status=405)
 
+# Given a task ID and a status, updates the status of that task.
+# Will only perform this update if the status transition is valid.
 @csrf_exempt
 def updateTaskStatus(request):
     if request.method == "POST":

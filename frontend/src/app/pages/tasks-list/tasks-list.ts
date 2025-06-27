@@ -26,6 +26,7 @@ import { Task, TaskStatus } from '../../services/tasks-service';
 import { StatusChipComponent } from '../../components/status-chip/status-chip';
 import { UpdateTaskDialog } from '../../dialogs/update-task-dialog/update-task-dialog';
 
+/** The main landing page of the app, which lists all tasks and provides functionality to manage them. */
 @Component({
   selector: 'app-tasks-list',
   standalone: true,

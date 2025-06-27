@@ -5,9 +5,9 @@
   <p>This action cannot be undone.</p>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-    <button mat-button (click)="onCancel()">Cancel</button>
-    <button mat-button color="warn" (click)="onDelete()" [disabled]="saving">
-        <ng-container *ngIf="saving">Deleting...</ng-container>
-        <ng-container *ngIf="!saving">Delete</ng-container>
-    </button>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button color="warn" (click)="onDelete()" [disabled]="saving">
+    <ng-container *ngIf="saving">Deleting...</ng-container>
+    <ng-container *ngIf="!saving">Delete</ng-container>
+  </button>
 </mat-dialog-actions>

@@ -14,6 +14,7 @@ import {
 } from '@angular/material/dialog';
 import { Task, TasksService } from '../../services/tasks-service';
 
+/** A dialog for updating an existing task. */
 @Component({
   selector: 'update-task-dialog',
   templateUrl: './update-task-dialog.html',

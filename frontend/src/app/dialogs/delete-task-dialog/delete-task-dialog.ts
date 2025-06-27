@@ -11,6 +11,7 @@ import {
 } from '@angular/material/dialog';
 import { Task, TasksService } from '../../services/tasks-service';
 
+/** A dialog for confirming the deletion of a task. */
 @Component({
   selector: 'delete-task-dialog',
   templateUrl: './delete-task-dialog.html',

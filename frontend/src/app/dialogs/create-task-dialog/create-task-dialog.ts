@@ -13,6 +13,7 @@ import {
 } from '@angular/material/dialog';
 import { TasksService } from '../../services/tasks-service';
 
+/** A dialog for creating a new task. */
 @Component({
   selector: 'create-task-dialog',
   templateUrl: './create-task-dialog.html',

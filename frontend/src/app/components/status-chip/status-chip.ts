@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { TaskStatus } from '../../services/tasks-service';
 import { Pipe, PipeTransform } from '@angular/core';
 
+/** A pipe to transform a task's status to a human readable display string. */
 @Pipe({ name: 'statusDisplayName', standalone: true })
 export class StatusDisplayNamePipe implements PipeTransform {
   transform(value: TaskStatus): string {
@@ -25,6 +26,7 @@ export class StatusDisplayNamePipe implements PipeTransform {
   }
 }
 
+/** A pipe to transform a task's status to a colour for display purposes. */
 @Pipe({ name: 'statusColour', standalone: true })
 export class StatusColourPipe implements PipeTransform {
   transform(value: TaskStatus): string {
@@ -44,6 +46,7 @@ export class StatusColourPipe implements PipeTransform {
   }
 }
 
+/** A coloured chip for displaying the status of a task. */
 @Component({
   selector: 'status-chip',
   standalone: true,
