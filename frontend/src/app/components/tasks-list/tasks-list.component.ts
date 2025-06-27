@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, DestroyRef, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, DestroyRef, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { take } from 'rxjs/operators';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -21,7 +22,7 @@ import { UpdateTaskDialog } from '../update-task-dialog/update-task-dialog';
 @Component({
   selector: 'app-tasks-list',
   standalone: true,
-  imports: [CommonModule, DatePipe, MatButtonModule, MatDialogModule, MatTableModule, MatIconModule, MatTooltipModule, MatMenuModule, MatProgressBarModule, StatusChipComponent],
+  imports: [CommonModule, DatePipe, MatButtonModule, MatDialogModule, MatTableModule, MatIconModule, MatTooltipModule, MatMenuModule, MatProgressBarModule, MatSortModule, StatusChipComponent],
   templateUrl: './tasks-list.component.html',
   styleUrl: './tasks-list.component.scss'
 })
@@ -35,6 +36,8 @@ export class TasksListComponent implements OnInit, OnDestroy {
   dataSource: Task[] = [];
   TaskStatus = TaskStatus;
   private dataRefresher: ReturnType<typeof setTimeout> | undefined =  undefined;
+
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor() {
     this.loadAllTasks();
@@ -110,6 +113,25 @@ export class TasksListComponent implements OnInit, OnDestroy {
     this.tasksService.updateTaskStatus(id, newStatus)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => this.loadAllTasks());
+  }
+
+  protected onSort(event: Sort) {
+    if (!event.active || event.direction === '') {
+      return;
+    }
+    this.dataSource = this.dataSource.slice().sort((a, b) => {
+      const isAsc = event.direction === 'asc';
+      switch (event.active) {
+        case 'name':
+          return a.name.localeCompare(b.name) * (isAsc ? 1 : -1);
+        case 'status':
+          return (b.status - a.status) * (isAsc ? 1 : -1);
+        case 'created':
+          return (a.created < b.created ? 1 : -1) * (isAsc ? 1 : -1);
+        default:
+          return 0;
+      }
+    });
   }
 
   private loadAllTasks() {
