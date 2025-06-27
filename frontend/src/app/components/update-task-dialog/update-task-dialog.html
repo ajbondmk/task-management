@@ -1,8 +1,13 @@
-<h1 mat-dialog-title>Update Task</h1>
+<h1 mat-dialog-title>Edit Task</h1>
 <mat-dialog-content>
   <mat-form-field appearance="fill">
     <mat-label>Name</mat-label>
     <input matInput [(ngModel)]="updatedName" required>
+    <mat-error>Task name is required.</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Description</mat-label>
+    <input matInput [(ngModel)]="updatedDescription">
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions align="end">

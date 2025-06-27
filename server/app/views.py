@@ -14,9 +14,10 @@ def createTask(request):
     if request.method == "POST":
         data = json.loads(request.body)
         name = data.get("name")
+        description = data.get("description")
         if not name:
             return JsonResponse({"error": "Task name is required"}, status=400)
-        Task.objects.create(name=name, created=timezone.now(), status=TaskStatus.NOT_STARTED.value)
+        Task.objects.create(name=name, description=description, created=timezone.now(), status=TaskStatus.NOT_STARTED.value)
         return JsonResponse({"status": "Task created"})
     return JsonResponse({"error": "POST request required"}, status=405)
 
@@ -39,13 +40,14 @@ def updateTask(request):
         data = json.loads(request.body)
         id = data.get("id")
         name = data.get("name")
+        description = data.get("description")
         if not id:
             return JsonResponse({"error": "Task ID is required"}, status=400)
         if not Task.objects.filter(id=id).exists():
             return JsonResponse({"error": "Task not found"}, status=404)
         if not name:
             return JsonResponse({"error": "Task name is required"}, status=400)
-        Task.objects.filter(id=id).update(name=name)
+        Task.objects.filter(id=id).update(name=name, description=description)
         return JsonResponse({"status": "Task updated"})
     return JsonResponse({"error": "POST request required"}, status=405)
 

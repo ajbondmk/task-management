@@ -11,6 +11,7 @@ import { Task, TasksService } from '../../services/tasks-service';
 @Component({
   selector: 'update-task-dialog',
   templateUrl: './update-task-dialog.html',
+  styleUrls: ['./update-task-dialog.scss'],
   imports: [CommonModule, FormsModule, MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent, MatFormFieldModule, MatInputModule],
   standalone: true,
 })
@@ -21,6 +22,7 @@ export class UpdateTaskDialog {
 
     protected data: {task: Task} = inject(MAT_DIALOG_DATA);
     protected updatedName: string = this.data.task.name;
+    protected updatedDescription: string = this.data.task.description;
     protected saving = false;
 
     protected onCancel() {
@@ -31,12 +33,12 @@ export class UpdateTaskDialog {
         if (!this.updatedName) {
             return;
         }
-        if (this.data.task.name === this.updatedName) {
+        if (this.data.task.name === this.updatedName && this.data.task.description === this.updatedDescription) {
             this.dialogRef.close();
             return;
         }
         this.saving = true;
-        this.tasksService.updateTask(this.data.task.id, this.updatedName)
+        this.tasksService.updateTask(this.data.task.id, this.updatedName, this.updatedDescription)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 // this.saving = false;

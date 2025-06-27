@@ -11,6 +11,7 @@ import { TasksService } from '../../services/tasks-service';
 @Component({
   selector: 'create-task-dialog',
   templateUrl: './create-task-dialog.html',
+  styleUrls: ['./create-task-dialog.scss'],
   imports: [CommonModule, FormsModule, MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent, MatFormFieldModule, MatInputModule],
   standalone: true,
 })
@@ -20,6 +21,7 @@ export class CreateTaskDialog {
     private readonly destroyRef = inject(DestroyRef);
 
     protected taskName: string = '';
+    protected taskDescription: string = '';
     protected saving = false;
 
     protected onCancel() {
@@ -27,8 +29,11 @@ export class CreateTaskDialog {
     }
 
     protected onCreate() {
+        if (!this.taskName) {
+            return;
+        }
         this.saving = true;
-        this.tasksService.createTask(this.taskName)
+        this.tasksService.createTask(this.taskName, this.taskDescription)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 // this.saving = false;

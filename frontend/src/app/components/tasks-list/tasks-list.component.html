@@ -3,41 +3,41 @@
 
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Task Name </th>
+    <th mat-header-cell *matHeaderCellDef><b> Task Name </b></th>
     <td mat-cell *matCellDef="let task"> {{task.name}} </td>
 </ng-container>
 
 <ng-container matColumnDef="description">
-    <th mat-header-cell *matHeaderCellDef> Description </th>
+    <th mat-header-cell *matHeaderCellDef><b> Description </b></th>
     <td mat-cell *matCellDef="let task"> {{task.description}} </td>
 </ng-container>
 
 <ng-container matColumnDef="status">
-    <th mat-header-cell *matHeaderCellDef> Status </th>
+    <th mat-header-cell *matHeaderCellDef><b> Status </b></th>
     <td mat-cell *matCellDef="let task">
         <status-chip [status]="task.status"></status-chip>
     </td>
 </ng-container>
 
 <ng-container matColumnDef="created">
-    <th mat-header-cell *matHeaderCellDef> Created </th>
+    <th mat-header-cell *matHeaderCellDef><b> Created </b></th>
     <td mat-cell *matCellDef="let task"> {{task.created | date:'d MMM, HH:mm:ss'}} </td>
 </ng-container>
 
 <ng-container matColumnDef="progressPercentage">
-    <th mat-header-cell *matHeaderCellDef> Progress </th>
+    <th mat-header-cell *matHeaderCellDef><b> Progress </b></th>
     <td mat-cell *matCellDef="let task">
         <mat-progress-bar *ngIf="task.status === TaskStatus.InProgress || task.status === TaskStatus.Paused || task.status === TaskStatus.Completed" mode="determinate" [value]="task.progressPercentage"></mat-progress-bar>
     </td>
 </ng-container>
 
 <ng-container matColumnDef="results">
-    <th mat-header-cell *matHeaderCellDef> Results </th>
+    <th mat-header-cell *matHeaderCellDef><b> Results </b></th>
     <td mat-cell *matCellDef="let task"> {{task.results}} </td>
 </ng-container>
 
 <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef></th>
+    <th mat-header-cell *matHeaderCellDef><b></b></th>
     <td mat-cell *matCellDef="let task">
         <button
                 *ngIf="task.status === TaskStatus.NotStarted || task.status === TaskStatus.Paused"

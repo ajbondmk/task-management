@@ -26,8 +26,8 @@ export enum TaskStatus {
 export class TasksService {
   private http = inject(HttpClient);
 
-  createTask(name: string): Observable<any> {
-    return this.http.post<any>('http://localhost:8000/createTask/', { name });
+  createTask(name: string, description: string): Observable<any> {
+    return this.http.post<any>('http://localhost:8000/createTask/', { name, description });
   }
 
   listTasks(): Observable<Task[]> {
@@ -48,8 +48,8 @@ export class TasksService {
     return this.http.post<any>('http://localhost:8000/deleteTask/', { id });
   }
 
-  updateTask(id: number, name: string): Observable<any> {
-    return this.http.post<any>('http://localhost:8000/updateTask/', { id, name });
+  updateTask(id: number, name: string, description: string): Observable<any> {
+    return this.http.post<any>('http://localhost:8000/updateTask/', { id, name, description });
   }
 
   updateTaskStatus(id: number, status: TaskStatus): Observable<any> {
