@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, DestroyRef, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import {
+  Component,
+  inject,
+  DestroyRef,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { take } from 'rxjs/operators';
 import { MatButtonModule } from '@angular/material/button';
@@ -22,9 +29,21 @@ import { UpdateTaskDialog } from '../update-task-dialog/update-task-dialog';
 @Component({
   selector: 'app-tasks-list',
   standalone: true,
-  imports: [CommonModule, DatePipe, MatButtonModule, MatDialogModule, MatTableModule, MatIconModule, MatTooltipModule, MatMenuModule, MatProgressBarModule, MatSortModule, StatusChipComponent],
+  imports: [
+    CommonModule,
+    DatePipe,
+    MatButtonModule,
+    MatDialogModule,
+    MatTableModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatMenuModule,
+    MatProgressBarModule,
+    MatSortModule,
+    StatusChipComponent,
+  ],
   templateUrl: './tasks-list.component.html',
-  styleUrl: './tasks-list.component.scss'
+  styleUrl: './tasks-list.component.scss',
 })
 export class TasksListComponent implements OnInit, OnDestroy {
   private readonly tasksService = inject(TasksService);
@@ -32,10 +51,18 @@ export class TasksListComponent implements OnInit, OnDestroy {
   private snackBar = inject(MatSnackBar);
   private readonly destroyRef = inject(DestroyRef);
 
-  displayedColumns: string[] = ['name', 'description', 'status', 'created', 'progressPercentage', 'results', 'actions'];
+  displayedColumns: string[] = [
+    'name',
+    'description',
+    'status',
+    'created',
+    'progressPercentage',
+    'results',
+    'actions',
+  ];
   dataSource: Task[] = [];
   TaskStatus = TaskStatus;
-  private dataRefresher: ReturnType<typeof setTimeout> | undefined =  undefined;
+  private dataRefresher: ReturnType<typeof setTimeout> | undefined = undefined;
 
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -45,18 +72,26 @@ export class TasksListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.dataRefresher = setInterval(() => {
-      this.tasksService.listTasks()
+      this.tasksService
+        .listTasks()
         .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe(data => {
-          this.dataSource.forEach(task => {
+        .subscribe((data) => {
+          this.dataSource.forEach((task) => {
             // Update relevant parts of the task without replacing the entire task or entire dataSource.
             // This is to avoid a full refresh of the table, which would close any open dialogs.
-            const updatedTask = data.find(t => t.id === task.id);
+            const updatedTask = data.find((t) => t.id === task.id);
             if (updatedTask) {
-              if (task.status !== updatedTask.status && updatedTask.status === TaskStatus.Completed) {
-                this.snackBar.open(`Task '${task.name}' is complete!`, 'Dismiss', {
-                  duration: 3000,
-                });
+              if (
+                task.status !== updatedTask.status &&
+                updatedTask.status === TaskStatus.Completed
+              ) {
+                this.snackBar.open(
+                  `Task '${task.name}' is complete!`,
+                  'Dismiss',
+                  {
+                    duration: 3000,
+                  }
+                );
                 task.status = updatedTask.status;
               }
               task.progressPercentage = updatedTask.progressPercentage;
@@ -72,45 +107,52 @@ export class TasksListComponent implements OnInit, OnDestroy {
   }
 
   protected openCreateTaskDialog() {
-    this.dialog.open(CreateTaskDialog, {
-      width: '500px',
-    }).afterClosed().pipe(
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe(result => {
-      if (result) {
-        this.loadAllTasks();
-      }
-    });
+    this.dialog
+      .open(CreateTaskDialog, {
+        width: '500px',
+      })
+      .afterClosed()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((result) => {
+        if (result) {
+          this.loadAllTasks();
+        }
+      });
   }
 
   protected openUpdateTaskDialog(task: Task) {
-    this.dialog.open(UpdateTaskDialog, {
-      width: '500px',
-      data: { task }
-    }).afterClosed().pipe(
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe(result => {
-      if (result) {
-        this.loadAllTasks();
-      }
-    });
+    this.dialog
+      .open(UpdateTaskDialog, {
+        width: '500px',
+        data: { task },
+      })
+      .afterClosed()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((result) => {
+        if (result) {
+          this.loadAllTasks();
+        }
+      });
   }
 
   protected openDeleteTaskDialog(task: Task) {
-    this.dialog.open(DeleteTaskDialog, {
-      width: '500px',
-      data: { task }
-    }).afterClosed().pipe(
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe(result => {
-      if (result) {
-        this.loadAllTasks();
-      }
-    });
+    this.dialog
+      .open(DeleteTaskDialog, {
+        width: '500px',
+        data: { task },
+      })
+      .afterClosed()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((result) => {
+        if (result) {
+          this.loadAllTasks();
+        }
+      });
   }
 
   protected updateTaskStatus(id: number, newStatus: TaskStatus) {
-    this.tasksService.updateTaskStatus(id, newStatus)
+    this.tasksService
+      .updateTaskStatus(id, newStatus)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => this.loadAllTasks());
   }
@@ -135,9 +177,10 @@ export class TasksListComponent implements OnInit, OnDestroy {
   }
 
   private loadAllTasks() {
-    this.tasksService.listTasks()
+    this.tasksService
+      .listTasks()
       .pipe(take(1), takeUntilDestroyed(this.destroyRef))
-      .subscribe(data => {
+      .subscribe((data) => {
         this.dataSource = data;
       });
   }

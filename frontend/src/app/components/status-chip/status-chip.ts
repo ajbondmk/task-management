@@ -47,10 +47,16 @@ export class StatusColourPipe implements PipeTransform {
 @Component({
   selector: 'status-chip',
   standalone: true,
-  imports: [CommonModule, MatChipsModule, MatIconModule, StatusDisplayNamePipe, StatusColourPipe],
+  imports: [
+    CommonModule,
+    MatChipsModule,
+    MatIconModule,
+    StatusDisplayNamePipe,
+    StatusColourPipe,
+  ],
   templateUrl: './status-chip.html',
-  styleUrl: './status-chip.scss'
+  styleUrl: './status-chip.scss',
 })
 export class StatusChipComponent {
-    @Input({required: true}) status!: TaskStatus;
+  @Input({ required: true }) status!: TaskStatus;
 }

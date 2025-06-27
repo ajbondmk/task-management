@@ -27,20 +27,28 @@ export class TasksService {
   private http = inject(HttpClient);
 
   createTask(name: string, description: string): Observable<any> {
-    return this.http.post<any>('http://localhost:8000/createTask/', { name, description });
+    return this.http.post<any>('http://localhost:8000/createTask/', {
+      name,
+      description,
+    });
   }
 
   listTasks(): Observable<Task[]> {
     return this.http.get<any[]>('http://localhost:8000/listTasks/').pipe(
-      map((tasks) => tasks.map((task) => ({
-        id: task.id,
-        name: task.name,
-        description: task.description,
-        created: task.created,
-        status: task.status,
-        progressPercentage: task.progressPercentage,
-        results: task.results
-      } as Task)))
+      map((tasks) =>
+        tasks.map(
+          (task) =>
+            ({
+              id: task.id,
+              name: task.name,
+              description: task.description,
+              created: task.created,
+              status: task.status,
+              progressPercentage: task.progressPercentage,
+              results: task.results,
+            } as Task)
+        )
+      )
     );
   }
 
@@ -49,10 +57,17 @@ export class TasksService {
   }
 
   updateTask(id: number, name: string, description: string): Observable<any> {
-    return this.http.post<any>('http://localhost:8000/updateTask/', { id, name, description });
+    return this.http.post<any>('http://localhost:8000/updateTask/', {
+      id,
+      name,
+      description,
+    });
   }
 
   updateTaskStatus(id: number, status: TaskStatus): Observable<any> {
-    return this.http.post<any>('http://localhost:8000/updateTaskStatus/', { id, status });
+    return this.http.post<any>('http://localhost:8000/updateTaskStatus/', {
+      id,
+      status,
+    });
   }
 }

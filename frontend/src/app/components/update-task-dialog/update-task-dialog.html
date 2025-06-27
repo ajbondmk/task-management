@@ -2,18 +2,18 @@
 <mat-dialog-content>
   <mat-form-field appearance="fill">
     <mat-label>Name</mat-label>
-    <input matInput [(ngModel)]="updatedName" required>
+    <input matInput [(ngModel)]="updatedName" required />
     <mat-error>Task name is required.</mat-error>
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>Description</mat-label>
-    <input matInput [(ngModel)]="updatedDescription">
+    <input matInput [(ngModel)]="updatedDescription" />
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-    <button mat-button (click)="onCancel()">Cancel</button>
-    <button mat-button color="primary" (click)="onUpdate()" [disabled]="saving">
-        <ng-container *ngIf="saving">Updating...</ng-container>
-        <ng-container *ngIf="!saving">Update</ng-container>
-    </button>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button color="primary" (click)="onUpdate()" [disabled]="saving">
+    <ng-container *ngIf="saving">Updating...</ng-container>
+    <ng-container *ngIf="!saving">Update</ng-container>
+  </button>
 </mat-dialog-actions>
