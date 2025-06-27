@@ -8,6 +8,7 @@ import { Task, TasksService } from '../../services/tasks-service';
 @Component({
   selector: 'delete-task-dialog',
   templateUrl: './delete-task-dialog.html',
+  styleUrls: ['./delete-task-dialog.scss'],
   imports: [CommonModule, MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent],
   standalone: true,
 })

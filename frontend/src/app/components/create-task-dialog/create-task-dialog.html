@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Create New Task</h1>
+<h1 mat-dialog-title>Create Task</h1>
 <mat-dialog-content>
   <mat-form-field appearance="fill">
     <mat-label>Name</mat-label>
@@ -11,7 +11,7 @@
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-    <button mat-button color="warn" (click)="onCancel()">Cancel</button>
+    <button mat-button (click)="onCancel()">Cancel</button>
     <button mat-button color="primary" (click)="onCreate()" [disabled]="saving">
         <ng-container *ngIf="saving">Creating...</ng-container>
         <ng-container *ngIf="!saving">Create</ng-container>
