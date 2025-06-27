@@ -17,6 +17,8 @@ In the UI, you can:
 
 Making use of multiple Dockerfiles, this should build the entire project, install all dependencies, initialise the database, and get everything up and running!
 
+> Note: For a faster UI development cycle, use `docker compose` for all other parts of the system, then use `ng serve frontend --live-reload --port 80`.
+
 ## Project structure
 
 - `frontend` - The UI code for this app, written in Typescript with Angular. The app consists of one main page, but split into various components for clarity, reusability, and separation of concerns. The service file is the layer which interacts with the backend via http requests.
