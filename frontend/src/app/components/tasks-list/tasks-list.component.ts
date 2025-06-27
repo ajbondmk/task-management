@@ -8,6 +8,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CreateTaskDialog } from '../create-task-dialog/create-task-dialog';
@@ -27,6 +28,7 @@ import { UpdateTaskDialog } from '../update-task-dialog/update-task-dialog';
 export class TasksListComponent implements OnInit, OnDestroy {
   private readonly tasksService = inject(TasksService);
   private readonly dialog = inject(MatDialog);
+  private snackBar = inject(MatSnackBar);
   private readonly destroyRef = inject(DestroyRef);
 
   displayedColumns: string[] = ['name', 'description', 'status', 'created', 'progressPercentage', 'results', 'actions'];
@@ -48,7 +50,12 @@ export class TasksListComponent implements OnInit, OnDestroy {
             // This is to avoid a full refresh of the table, which would close any open dialogs.
             const updatedTask = data.find(t => t.id === task.id);
             if (updatedTask) {
-              task.status = updatedTask.status;
+              if (task.status !== updatedTask.status && updatedTask.status === TaskStatus.Completed) {
+                this.snackBar.open(`Task '${task.name}' is complete!`, 'Dismiss', {
+                  duration: 3000,
+                });
+                task.status = updatedTask.status;
+              }
               task.progressPercentage = updatedTask.progressPercentage;
               task.results = updatedTask.results;
             }
