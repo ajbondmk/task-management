@@ -60,7 +60,6 @@ export class UpdateTaskDialog {
       .updateTask(this.data.task.id, this.updatedName, this.updatedDescription)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
-        // this.saving = false;
         this.dialogRef.close(true);
       });
   }

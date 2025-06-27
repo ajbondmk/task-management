@@ -51,7 +51,6 @@ export class CreateTaskDialog {
       .createTask(this.taskName, this.taskDescription)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
-        // this.saving = false;
         this.dialogRef.close(true);
       });
   }

@@ -33,7 +33,6 @@ export class DeleteTaskDialog {
   protected saving = false;
 
   protected onCancel() {
-    console.log(this.data);
     this.dialogRef.close();
   }
 
@@ -43,7 +42,6 @@ export class DeleteTaskDialog {
       .deleteTask(this.data.task.id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
-        // this.saving = false;
         this.dialogRef.close(true);
       });
   }

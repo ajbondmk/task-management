@@ -71,14 +71,15 @@ export class TasksListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // Update data on task progress (status, progressPercentage & results) on a regular basis (every second).
+    // Only replace the relevant parts of the task, without replacing the entire task or entire dataSource.
+    // This is to avoid a full refresh of the table, which would close any open dialogs.
     this.dataRefresher = setInterval(() => {
       this.tasksService
         .listTasks()
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe((data) => {
           this.dataSource.forEach((task) => {
-            // Update relevant parts of the task without replacing the entire task or entire dataSource.
-            // This is to avoid a full refresh of the table, which would close any open dialogs.
             const updatedTask = data.find((t) => t.id === task.id);
             if (updatedTask) {
               if (
@@ -94,8 +95,12 @@ export class TasksListComponent implements OnInit, OnDestroy {
                 );
                 task.status = updatedTask.status;
               }
-              task.progressPercentage = updatedTask.progressPercentage;
-              task.results = updatedTask.results;
+              if (task.progressPercentage !== updatedTask.progressPercentage) {
+                task.progressPercentage = updatedTask.progressPercentage;
+              }
+              if (task.results !== updatedTask.results) {
+                task.results = updatedTask.results;
+              }
             }
           });
         });
@@ -176,6 +181,7 @@ export class TasksListComponent implements OnInit, OnDestroy {
     });
   }
 
+  // A full refresh of the list of tasks.
   private loadAllTasks() {
     this.tasksService
       .listTasks()
