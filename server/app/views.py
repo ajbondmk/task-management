@@ -5,6 +5,14 @@ import json
 from .models import Task
 from .models import TaskStatus
 
+valid_status_transitions = {
+    TaskStatus.NOT_STARTED.value: [TaskStatus.RUNNING.value, TaskStatus.CANCELLED.value],
+    TaskStatus.RUNNING.value: [TaskStatus.PAUSED.value, TaskStatus.CANCELLED.value],
+    TaskStatus.DONE.value: [],
+    TaskStatus.PAUSED.value: [TaskStatus.RUNNING.value, TaskStatus.CANCELLED.value],
+    TaskStatus.CANCELLED.value: [TaskStatus.RUNNING.value],
+}
+
 def listTasks(request):
     latest_task_list = Task.objects.order_by("-created")
     return JsonResponse(list(latest_task_list.values()), safe=False)
@@ -61,24 +69,11 @@ def updateTaskStatus(request):
             return JsonResponse({"error": "Task ID is required"}, status=400)
         if not Task.objects.filter(id=id).exists():
             return JsonResponse({"error": "Task not found"}, status=404)
+        oldStatus = Task.objects.get(id=id).status
+        if oldStatus not in valid_status_transitions or status not in valid_status_transitions[oldStatus]:
+            return JsonResponse({"error": "Invalid status transition"}, status=400)
         Task.objects.filter(id=id).update(status=status)
         if status == TaskStatus.CANCELLED.value:
             Task.objects.filter(id=id).update(progressPercentage=0)
         return JsonResponse({"status": "Task status updated"})
     return JsonResponse({"error": "POST request required"}, status=405)
-
-
-# <!-- 
-#     not started
-#         in progress
-#         (cancelled)
-#     in progress
-#         paused
-#         (cancelled)
-#     completed
-#     paused
-#         in progress
-#         (cancelled)
-#     cancelled
-#         (in progress)
-# -->
