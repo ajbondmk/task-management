@@ -42,6 +42,7 @@
         <button
                 *ngIf="task.status === TaskStatus.NotStarted || task.status === TaskStatus.Paused"
                 mat-icon-button
+                color="primary"
                 (click)="updateTaskStatus(task.id, TaskStatus.InProgress)"
                 [matTooltip]="task.status === TaskStatus.NotStarted ? 'Run task' : 'Resume task'">
             <mat-icon>play_arrow</mat-icon>
@@ -49,6 +50,7 @@
         <button
                 *ngIf="task.status === TaskStatus.InProgress"
                 mat-icon-button
+                color="primary"
                 (click)="updateTaskStatus(task.id, TaskStatus.Paused)"
                 matTooltip="Pause task">
             <mat-icon>pause</mat-icon>
